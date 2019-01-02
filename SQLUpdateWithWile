@@ -1,0 +1,21 @@
+               
+ALTER TABLE [TABLE1] ADD Status int NULL
+
+UPDATE   [TABLE1]
+SET Status =0
+WHERE Status IS NULL
+
+
+            declare @Id int                                                             
+                                   
+            while exists (select * from [TABLE1] where Status = 0)
+				    begin       
+                                     
+							  select top 1  @Id = Id  from  [TABLE1] where Status = 0                                
+ 
+							  update t set Col1=t.Col1 ,Col2 =t.Col2
+							  from [TABLE12] t  where t.Id=@Id 
+
+				        update [TABLE1] set Status = 1 where Status = 0   and Id=@Id   
+
+           end
