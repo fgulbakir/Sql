@@ -1,0 +1,36 @@
+
+
+  CREATE FUNCTION [FUNCTION_NAME]
+    ( 
+       @List NVARCHAR(MAX),
+       @Splitter NVARCHAR(MAX)
+    )
+
+    RETURNS @SplitTable TABLE 
+    (
+       ID INT IDENTITY(1,1),
+       SplittedItem NVARCHAR(MAX)
+    ) 
+    AS
+    BEGIN 
+      DECLARE @Sayac INT=1
+      DECLARE @Index INT =CHARINDEX(@Splitter,@List) 
+     
+	  WHILE (@Index>0)
+
+       BEGIN
+         INSERT INTO @SplitTable (SplittedItem)
+         SELECT SplittedText= LTRIM(RTRIM(SUBSTRING(@List, 1, @Index - 1)))       
+ 
+         SET @List = SUBSTRING(@List,@Index + DATALENGTH(@Splitter) / 2,LEN(@List))
+         SET @Sayac = @Sayac + 1
+		 SET @Index = CHARINDEX(@Splitter, @List)
+
+       END
+
+       INSERT INTO @SplitTable (SplittedItem)
+       SELECT SplittedText = LTRIM(RTRIM(@List))
+
+      RETURN
+
+    END
